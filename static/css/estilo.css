@@ -1,0 +1,253 @@
+:root {
+  --cor-fundo: #0f172a;
+  --cor-painel: #1e293b;
+  --cor-borda: #334155;
+  --cor-texto: #e2e8f0;
+  --cor-texto-suave: #94a3b8;
+  --cor-primaria: #0d9488;
+  --cor-primaria-hover: #0f766e;
+  --cor-origem: #16a34a;
+  --cor-destino: #dc2626;
+  --fonte: "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: var(--fonte);
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  overflow: hidden;
+}
+
+body {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) 1fr;
+  grid-template-rows: 1fr;
+  height: 100vh;
+}
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--cor-painel);
+  border-right: 1px solid var(--cor-borda);
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.painel__cabecalho h1 {
+  font-size: 1.25rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.painel__subtitulo,
+.painel__instrucao,
+.painel__nota,
+.painel__status {
+  font-size: 0.875rem;
+  color: var(--cor-texto-suave);
+  line-height: 1.45;
+}
+
+.painel__selecao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.campo__rotulo {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--cor-texto-suave);
+}
+
+.campo__valor {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.campo--limiar select {
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font: inherit;
+}
+
+.painel__acoes {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.botao {
+  flex: 1;
+  padding: 0.65rem 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.botao:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.botao--primario {
+  background: var(--cor-primaria);
+  color: #fff;
+}
+
+.botao--primario:not(:disabled):hover {
+  background: var(--cor-primaria-hover);
+}
+
+.botao--secundario {
+  background: transparent;
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+}
+
+.botao--secundario:hover {
+  background: var(--cor-borda);
+}
+
+.painel__status--erro {
+  color: #fca5a5;
+}
+
+.painel__status--ok {
+  color: #86efac;
+}
+
+.painel__resultado h2 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.resumo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.resumo dt {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--cor-texto-suave);
+}
+
+.resumo dd {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.lista-caminho {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.lista-caminho li {
+  padding: 0.55rem 0.65rem;
+  border-radius: 6px;
+  background: var(--cor-fundo);
+  border-left: 3px solid var(--cor-primaria);
+  font-size: 0.85rem;
+}
+
+.lista-caminho li.origem {
+  border-left-color: var(--cor-origem);
+}
+
+.lista-caminho li.destino {
+  border-left-color: var(--cor-destino);
+}
+
+.lista-caminho .passo-meta {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--cor-texto-suave);
+  font-size: 0.75rem;
+}
+
+#mapa {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+
+.marcador-estacao {
+  background: transparent;
+  border: none;
+}
+
+.marcador-estacao__ponto {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #38bdf8;
+  border: 2px solid #0f172a;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.35);
+}
+
+.marcador-estacao--origem .marcador-estacao__ponto {
+  width: 16px;
+  height: 16px;
+  background: #16a34a;
+}
+
+.marcador-estacao--destino .marcador-estacao__ponto {
+  width: 16px;
+  height: 16px;
+  background: #dc2626;
+}
+
+.marcador-estacao--parada .marcador-estacao__ponto {
+  background: #0d9488;
+}
+
+@media (max-width: 800px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(220px, 40vh) 1fr;
+    height: 100vh;
+  }
+
+  .painel {
+    border-right: none;
+    border-bottom: 1px solid var(--cor-borda);
+    max-height: none;
+  }
+
+  #mapa {
+    min-height: 0;
+  }
+}

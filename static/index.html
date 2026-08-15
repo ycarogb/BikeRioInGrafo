@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caminho BFS — BikeRio</title>
+  <link rel="stylesheet" href="/lib/leaflet/leaflet.css" />
+  <link rel="stylesheet" href="/css/estilo.css" />
+</head>
+<body>
+  <aside class="painel">
+    <header class="painel__cabecalho">
+      <h1>Caminho com menos paradas</h1>
+      <p class="painel__subtitulo">
+        Pesquisa em largura (BFS) nas estações do BikeRio
+      </p>
+    </header>
+
+    <p class="painel__instrucao" id="instrucao">
+      Clique em uma estação de <strong>origem</strong> e depois na de
+      <strong>destino</strong>.
+    </p>
+
+    <section class="painel__selecao">
+      <div class="campo">
+        <span class="campo__rotulo">Origem</span>
+        <span class="campo__valor" id="origem-nome">—</span>
+      </div>
+      <div class="campo">
+        <span class="campo__rotulo">Destino</span>
+        <span class="campo__valor" id="destino-nome">—</span>
+      </div>
+    </section>
+
+    <label class="campo campo--limiar" for="limiar">
+      <span class="campo__rotulo">Distância máxima entre vizinhas</span>
+      <select id="limiar">
+        <option value="300">300 m</option>
+        <option value="500" selected>500 m</option>
+        <option value="800">800 m</option>
+        <option value="1000">1000 m</option>
+      </select>
+    </label>
+
+    <div class="painel__acoes">
+      <button type="button" id="botao-calcular" class="botao botao--primario" disabled>
+        Calcular caminho
+      </button>
+      <button type="button" id="botao-limpar" class="botao botao--secundario">
+        Limpar
+      </button>
+    </div>
+
+    <p class="painel__status" id="status" aria-live="polite"></p>
+
+    <section class="painel__resultado" id="resultado" hidden>
+      <h2>Resultado</h2>
+      <dl class="resumo">
+        <div>
+          <dt>Paradas (saltos)</dt>
+          <dd id="total-paradas">—</dd>
+        </div>
+        <div>
+          <dt>Distância total</dt>
+          <dd id="distancia-total">—</dd>
+        </div>
+      </dl>
+      <ol class="lista-caminho" id="lista-caminho"></ol>
+      <p class="painel__nota">
+        O BFS minimiza o número de paradas, não necessariamente os quilômetros.
+      </p>
+    </section>
+  </aside>
+
+  <main id="mapa" aria-label="Mapa das estações BikeRio"></main>
+
+  <script src="/lib/leaflet/leaflet.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/mapa.js"></script>
+</body>
+</html>

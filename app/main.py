@@ -1,4 +1,8 @@
+from pathlib import Path
+
 from fastapi import FastAPI, Query  # type: ignore[reportMissingImports]
+from fastapi.staticfiles import StaticFiles
+
 from app.coletor_estacoes import obter_estacoes
 from app.construtor_grafo import consruir_grafo
 from app.calculadora_melhor_caminho import (
@@ -6,40 +10,47 @@ from app.calculadora_melhor_caminho import (
     detalhar_caminho,
 )
 
+DIRETORIO_STATIC = Path(__file__).resolve().parent.parent / "static"
+
 app = FastAPI(title="Grafo de estações BikeRio")
 
-@app.get("/")
-def raiz():
+
+@app.get("/health")
+def health():
     return {"ok": True}
+
 
 @app.get("/estacoes")
 def listar_estacoes():
     return obter_estacoes()
 
+
 @app.get("/grafo")
 def obter_grafo(
-    distancia_maxima_metros: float = Query(default=500, gt=0) #Query(default=500, gt=0) vira ?distancia_maxima_metros=500 na URL e recusa valor negativo
+    distancia_maxima_metros: float = Query(default=500, gt=0),
 ):
     estacoes = obter_estacoes()
     return {
         "distancia_maxima_metros": distancia_maxima_metros,
         "total_estacoes": len(estacoes),
-        "grafo": consruir_grafo(estacoes, distancia_maxima_metros)
+        "grafo": consruir_grafo(estacoes, distancia_maxima_metros),
     }
+
 
 @app.get("/estacoes/{id_estacao}/vizinhos")
 def obter_vizinhos(
     id_estacao: str,
-    distancia_maxima_metros: float = Query(default=5800, gt=0)
+    distancia_maxima_metros: float = Query(default=500, gt=0),
 ):
     estacoes = obter_estacoes()
     grafo = consruir_grafo(estacoes, distancia_maxima_metros)
     vizinhos = grafo.get(id_estacao)
 
-    if vizinhos is None: 
+    if vizinhos is None:
         return {"erro": "Estação não encontrada"}
 
     return {"id": id_estacao, "vizinhos": vizinhos}
+
 
 @app.get("/caminho")
 def obter_caminho(
@@ -64,3 +75,10 @@ def obter_caminho(
         "distancia_total_metros": detalhe["distancia_total_metros"],
         "caminho": detalhe["caminho"],
     }
+
+
+app.mount(
+    "/",
+    StaticFiles(directory=str(DIRETORIO_STATIC), html=True),
+    name="frontend",
+)
