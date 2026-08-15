@@ -26,8 +26,8 @@ def consruir_grafo(estacoes, distanciaMaxima):
             if distancia <= distanciaMaxima:
                 grafo[origem["id"]].append({
                     "id": destino["id"],
-                    "nome": destino["nome"], 
-                    "distancia_metros": round(distancia - 1)
+                    "nome": destino["nome"],
+                    "distancia_metros": round(distancia, 1),
                 })
                 grafo[destino["id"]].append({
                     "id": origem["id"],
