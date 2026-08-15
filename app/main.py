@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Query  # type: ignore[reportMissingImports]
 from app.coletor_estacoes import obter_estacoes
 from app.construtor_grafo import consruir_grafo
+from app.calculadora_melhor_caminho import caminho_com_menos_paradas
 
 app = FastAPI(title="Grafo de estações BikeRio")
 
@@ -36,3 +37,24 @@ def obter_vizinhos(
         return {"erro": "Estação não encontrada"}
 
     return {"id": id_estacao, "vizinhos": vizinhos}
+
+@app.get("/caminho")
+def obter_caminho(
+    origem: str,
+    destino: str,
+    distancia_maxima_metros: float = Query(default=500, gt=0)
+):
+    estacoes = obter_estacoes()
+    grafo = consruir_grafo(estacoes, distancia_maxima_metros)
+    caminho = caminho_com_menos_paradas(grafo, origem, destino)
+
+    if caminho is None: 
+        return {"erro": "Não há caminho estre as estações com esse limiar"}
+
+    return {
+        "origem": origem,
+        "destino": destino,
+        "distancia_maxima_metros": distancia_maxima_metros,
+        "total_paradas": len(caminho) - 1,
+        "caminho": caminho
+    }

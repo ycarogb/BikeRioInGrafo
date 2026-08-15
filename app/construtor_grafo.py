@@ -13,7 +13,7 @@ def distancia_em_metros(lat1, long1, lat2, long2):
     return raio_terra * 2 * atan2(sqrt(a), sqrt(1-a))
 
 def consruir_grafo(estacoes, distanciaMaxima):
-    grafo = {estacao["nome"]: [] for estacao in estacoes}
+    grafo = {estacao["id"]: [] for estacao in estacoes}
 
     for i, origem in enumerate(estacoes):
         for destino in estacoes[i + 1:]:
@@ -24,12 +24,12 @@ def consruir_grafo(estacoes, distanciaMaxima):
                 destino["longitude"]
             )
             if distancia <= distanciaMaxima:
-                grafo[origem["nome"]].append({
+                grafo[origem["id"]].append({
                     "id": destino["id"],
                     "nome": destino["nome"], 
                     "distancia_metros": round(distancia - 1)
                 })
-                grafo[destino["nome"]].append({
+                grafo[destino["id"]].append({
                     "id": origem["id"],
                     "nome": origem["nome"],
                     "distancia_metros": round(distancia, 1)
